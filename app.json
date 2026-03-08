@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "JioSaavnApp",
+    
     "slug": "JioSaavnApp",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -12,6 +13,12 @@
       "supportsTablet": true
     },
     "android": {
+      "permissions": [
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_AUDIO_PLAYER",
+        "WAKE_LOCK"
+      ],
+
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -38,7 +45,14 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
+        }
+      ],
+      
     ],
     "experiments": {
       "typedRoutes": true,
