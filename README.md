@@ -65,14 +65,17 @@ a → run on Android emulator/device
 
 ```
 
-# Screen Shots of Music App
+# Some Screen Shots of Music App
 Home Screen Dark Mode
 
 ![suggest screen dark](https://github.com/user-attachments/assets/474d806e-f209-4673-8fd2-677dbc01f3a9)
 
 Home Screen Light Mode
 
+![suggested light theme](https://github.com/user-attachments/assets/9d158ab8-b521-4ec3-99c8-c4b4348249e2)
 
+
+Search  Screen
 
 ![search result dark theme ](https://github.com/user-attachments/assets/c7192d67-be3e-4fd3-90a2-a39cacc8c2c3)
 
@@ -80,7 +83,12 @@ Home Screen Light Mode
 ![search dark theme](https://github.com/user-attachments/assets/163abe38-8d25-43b2-a32c-1cee2877f27c)
 
 
+
+Player Screen 
+
+
 ![Player White theme](https://github.com/user-attachments/assets/9f2a96b2-2dbe-448f-83c6-380acbf669d5)
+
 
 
 
