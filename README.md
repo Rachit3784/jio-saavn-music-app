@@ -66,7 +66,13 @@ a → run on Android emulator/device
 ```
 
 # Screen Shots of Music App
+![suggest screen dark](https://github.com/user-attachments/assets/474d806e-f209-4673-8fd2-677dbc01f3a9)
+![suggested light theme](https://github.com/user-attachments/assets/76f80c44-9484-419c-adf![songs light theme](https://github.com/user-attachments/assets/9f9acf0f-d17c-44c3-a079-e27e001346aa)
+5-dd5beb608a60)![songs dark theme](https://github.com/use![search screen light theme](https://github.com/user-attachments/assets/dfa4ed3b-1766-48c4-a03f-3be898f726c2)
+r-attachments/assets/ba24cd41-3b79-4ab1-b844-3610b5c8f15b)
+![search result dark theme ](https://github.com/user-attachments/assets/c7192d67-be3e-4fd3-90a2-a39cacc8c2c3)
+![search dark theme](https://github.com/user-attachments/assets/163abe38-8d25-43b2-a32c-1cee2877f27c)![Player White theme](https://github.com/user-attachments/assets/9f2a96b2-2dbe-448f-83c6-380acbf669d5)
+![player screen dark theme](https://github.com/user-attachments/assets/350f9bff-2110-4957-9bab-54d9ce81faf3)
 
 
-![Suggestion1](https://github.com/user-attachments/assets/04147c11-8be9-4003-9230-1665afbee847)
 
