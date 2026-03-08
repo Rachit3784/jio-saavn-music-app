@@ -77,8 +77,10 @@ Home Screen Light Mode
 ![search result dark theme ](https://github.com/user-attachments/assets/c7192d67-be3e-4fd3-90a2-a39cacc8c2c3)
 
 
-![search dark theme](https://github.com/user-attachments/assets/163abe38-8d25-43b2-a32c-1cee2877f27c)![Player White theme]
-(https://github.com/user-attachments/assets/9f2a96b2-2dbe-448f-83c6-380acbf669d5)
+![search dark theme](https://github.com/user-attachments/assets/163abe38-8d25-43b2-a32c-1cee2877f27c)
+
+
+![Player White theme](https://github.com/user-attachments/assets/9f2a96b2-2dbe-448f-83c6-380acbf669d5)
 
 
 
