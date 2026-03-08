@@ -72,15 +72,7 @@ Home Screen Dark Mode
 
 Home Screen Light Mode
 
-![suggested light theme](https://github.com/user-attachments/assets/76f80c44-9484-419c-adf![songs light theme](https://github.com/user-attachments/assets/9f9acf0f-d17c-44c3-a079-e27e001346aa) 
-5-dd5beb608a60)
 
-Songs Light Mode
-
-![songs dark theme](https://github.com/use![search screen light theme](https://github.com/user-attachments/assets/dfa4ed3b-1766-48c4-a03f-3be898f726c2)
-r-attachments/assets/ba24cd41-3b79-4ab1-b844-3610b5c8f15b)
-
-Search Results Dark
 
 ![search result dark theme ](https://github.com/user-attachments/assets/c7192d67-be3e-4fd3-90a2-a39cacc8c2c3)
 
