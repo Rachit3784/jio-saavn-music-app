@@ -62,3 +62,11 @@ npx expo start -c
 
 a → run on Android emulator/device
 
+
+```
+
+# Screen Shots of Music App
+
+
+![Suggestion1](https://github.com/user-attachments/assets/04147c11-8be9-4003-9230-1665afbee847)
+
