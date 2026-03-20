@@ -22,7 +22,7 @@ export default function TabLayout() {
         <Tabs.Screen name='Home' component={HomeScreen} />
         <Tabs.Screen name='Favourites' component={FavoritesScreen} />
         <Tabs.Screen name='Playlist' component={Playlists} />
-        <Tabs.Screen name='Settings' component={settings} />
+       
       </Tabs.Navigator>
 
       

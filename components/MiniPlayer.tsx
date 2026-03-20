@@ -1,27 +1,41 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, useSegments } from 'expo-router';
-import { useThemeColor } from '@/hooks/use-theme-color';
-import { useMusicStore } from '@/store/myStore';
-import { getGlobalSound } from '@/store/audioController';
+import { useThemeColor } from "@/hooks/use-theme-color";
+import { getGlobalSound } from "@/store/audioController";
+import { useMusicStore } from "@/store/myStore";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation, useSegments } from "expo-router";
+import React from "react";
+import {
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function MiniPlayer() {
-  const { currentSong, isPlaying, position, duration, togglePlayState } = useMusicStore();
+  const { currentSong, isPlaying, position, duration, togglePlayState } =
+    useMusicStore();
   const segments = useSegments();
   const navigation = useNavigation();
 
   // --- Theme Colors ---
   // Yahan 'background' use kar rahe hain jo light mode mein '#fff' hai
-  const playerBg = useThemeColor({}, 'background'); 
-  const textColor = useThemeColor({}, 'text');
-  const secColor = useThemeColor({}, 'secondaryText');
-  const accentColor = useThemeColor({}, 'accent');
-  const borderColor = useThemeColor({}, 'icon'); 
+  const playerBg = useThemeColor({}, "background");
+  const textColor = useThemeColor({}, "text");
+  const secColor = useThemeColor({}, "secondaryText");
+  const accentColor = useThemeColor({}, "accent");
+  const borderColor = useThemeColor({}, "icon");
 
-  const isPlayerScreen = segments.includes('PlayerScreen') || segments.includes('(stack)/PlayerScreen');
-  
-  if (!currentSong || isPlayerScreen) return null;
+  const isPlayerScreen =
+    segments.includes("PlayerScreen") ||
+    segments.includes("(stack)/PlayerScreen");
+
+  // Enhanced logic: Show MiniPlayer if there's a current song OR if we're transitioning
+  // Don't hide immediately when currentSong becomes null during song changes
+  const shouldShowMiniPlayer = currentSong || isPlaying;
+
+  if (!shouldShowMiniPlayer || isPlayerScreen) return null;
 
   const progress = (position / duration) * 100 || 0;
 
@@ -38,37 +52,65 @@ export default function MiniPlayer() {
   };
 
   return (
-    <TouchableOpacity 
-      activeOpacity={0.9} 
-      onPress={() => navigation.navigate("Stacks", { screen: 'PlayerScreen' })} 
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPress={() => navigation.navigate("Stacks", { screen: "PlayerScreen" })}
       style={[
-        styles.container, 
-        { 
+        styles.container,
+        {
           backgroundColor: playerBg, // Ab ye white dikhega light mode mein
-          borderColor: `${borderColor}33` 
-        }
+          borderColor: `${borderColor}33`,
+        },
       ]}
     >
-      <View style={[styles.progressBackground, { backgroundColor: `${secColor}22` }]}>
-        <View style={[styles.progressFill, { width: `${progress}%`, backgroundColor: accentColor }]} />
+      <View
+        style={[
+          styles.progressBackground,
+          { backgroundColor: `${secColor}22` },
+        ]}
+      >
+        <View
+          style={[
+            styles.progressFill,
+            { width: `${progress}%`, backgroundColor: accentColor },
+          ]}
+        />
       </View>
-      
+
       <View style={styles.content}>
-        <Image source={{ uri: currentSong?.obj?.image }} style={styles.img} />
+        <Image
+          source={{
+            uri:
+              currentSong?.obj?.image ||
+              "https://via.placeholder.com/48x48/cccccc/666666?text=♪",
+          }}
+          style={styles.img}
+        />
         <View style={styles.info}>
           <Text numberOfLines={1} style={[styles.title, { color: textColor }]}>
-            {currentSong?.obj?.name}
+            {currentSong?.obj?.name || "Loading..."}
           </Text>
           <Text numberOfLines={1} style={[styles.artist, { color: secColor }]}>
-            {isPlaying ? "Now Playing" : "Paused"}
+            {currentSong
+              ? isPlaying
+                ? "Now Playing"
+                : "Paused"
+              : "Switching songs..."}
           </Text>
         </View>
 
-        <TouchableOpacity 
-          onPress={handleTogglePlay} 
+        <TouchableOpacity
+          onPress={handleTogglePlay}
           style={[styles.playBtn, { backgroundColor: `${accentColor}15` }]}
+          disabled={!currentSong}
         >
-          <Ionicons name={isPlaying ? "pause" : "play"} size={26} color={accentColor} />
+          <Ionicons
+            name={
+              currentSong ? (isPlaying ? "pause" : "play") : "musical-notes"
+            }
+            size={26}
+            color={currentSong ? accentColor : secColor}
+          />
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
@@ -76,32 +118,35 @@ export default function MiniPlayer() {
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    position: 'absolute', 
-    bottom: Platform.OS === 'ios' ? 100 : 75, 
-    left: 0, 
-    right: 0, 
-    borderRadius: 15, 
-    height: 70, 
-    
+  container: {
+    position: "absolute",
+    bottom: Platform.OS === "ios" ? 100 : 75,
+    left: 0,
+    right: 0,
+    borderRadius: 15,
+    height: 70,
+
     borderWidth: 1,
-    overflow: 'hidden',
+    overflow: "hidden",
     zIndex: 1000,
-    
-   
   },
-  progressBackground: { height: 3, width: '100%' },
+  progressBackground: { height: 3, width: "100%" },
   progressFill: { height: 3 },
-  content: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 15, flex: 1 },
+  content: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 15,
+    flex: 1,
+  },
   img: { width: 48, height: 48, borderRadius: 10 },
   info: { flex: 1, marginLeft: 12 },
-  title: { fontSize: 15, fontWeight: 'bold' },
+  title: { fontSize: 15, fontWeight: "bold" },
   artist: { fontSize: 12, marginTop: 2 },
-  playBtn: { 
-    borderRadius: 25, 
-    width: 45, 
-    height: 45, 
-    justifyContent: 'center', 
-    alignItems: 'center' 
-  }
+  playBtn: {
+    borderRadius: 25,
+    width: 45,
+    height: 45,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

@@ -10,11 +10,16 @@ import { useNavigation } from 'expo-router';
 
 const RecentlyPlayedScreen = () => {
   const navigation = useNavigation<any>();
+  
+  // --- Theme Colors ---
+  const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const secColor = useThemeColor({}, 'secondaryText');
+  const accentColor = useThemeColor({}, 'accent');
+  const cardColor = useThemeColor({}, 'card');
+
   const { SongQueue, setSong, removeFromQueue, clearQueue } = useMusicStore();
 
-  // Latest first dikhane ke liye reverse use karenge
   const data = [...SongQueue].reverse();
 
   const handlePlay = (item: any) => {
@@ -26,12 +31,12 @@ const RecentlyPlayedScreen = () => {
   };
 
   const renderItem = ({ item }: any) => (
-    <View style={styles.songRow}>
+    <View style={[styles.songRow, { backgroundColor: backgroundColor }]}>
       <TouchableOpacity 
         style={styles.songInfo} 
         onPress={() => handlePlay(item)}
       >
-        <Image source={{ uri: item.obj.image }} style={styles.thumb} />
+        <Image source={{ uri: item.obj.image }} style={[styles.thumb, { backgroundColor: cardColor }]} />
         <View style={{ flex: 1, marginLeft: 15 }}>
           <Text numberOfLines={1} style={[styles.songName, { color: textColor }]}>
             {item.obj.name}
@@ -50,17 +55,20 @@ const RecentlyPlayedScreen = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor }]}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color={textColor} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: textColor }]}>Recently Played</Text>
-        {data.length > 0 && (
+        
+        {data.length > 0 ? (
           <TouchableOpacity onPress={clearQueue}>
-            <Text style={styles.clearText}>Clear All</Text>
+            <Text style={[styles.clearText, { color: accentColor }]}>Clear All</Text>
           </TouchableOpacity>
+        ) : (
+          <View style={{ width: 24 }} /> // Space maintainer
         )}
       </View>
 
@@ -75,6 +83,7 @@ const RecentlyPlayedScreen = () => {
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
           contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 100 }}
+          showsVerticalScrollIndicator={false}
         />
       )}
     </SafeAreaView>
@@ -82,21 +91,21 @@ const RecentlyPlayedScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#111' },
+  container: { flex: 1 },
   header: { 
     flexDirection: 'row', 
     alignItems: 'center', 
     justifyContent: 'space-between',
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
     marginTop: 30
   },
   headerTitle: { fontSize: 22, fontWeight: 'bold' },
-  clearText: { color: '#FF8216', fontWeight: 'bold' },
+  clearText: { fontWeight: 'bold' },
   songRow: { 
     flexDirection: 'row', 
     alignItems: 'center', 
     marginBottom: 20,
-    backgroundColor: '#111',
     paddingHorizontal: 3,
     paddingVertical: 5,
     borderRadius: 15

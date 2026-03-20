@@ -23,7 +23,7 @@ export default function HomeScreen() {
 
   const ActiveComponent = useMemo(() => {
     switch (activeTab) {
-      case 'Suggested': return <Suggested />;
+      case 'Suggested': return <Suggested  setActiveTab = {setActiveTab}/>;
       case 'Songs': return <Songs navigation = {navigation} />;
       case 'Artists': return <Artists />;
       case 'Albums': return <Albums />;
