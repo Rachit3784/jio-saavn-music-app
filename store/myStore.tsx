@@ -1,6 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Audio } from "expo-av";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import {
+  setGlobalSound,
+  setLastLoadedId,
+  stopAndUnloadCurrentSound,
+} from "./audioController";
 
 interface SongData {
   name: string;
@@ -45,6 +51,59 @@ interface MusicState {
   stopCurrentPlayback: () => void;
 }
 
+// Audio loading and playback function
+const loadAndPlayAudio = async (songId: string, songData: SongData) => {
+  try {
+    console.log("🎵 Loading audio for:", songData.name);
+
+    // Stop and unload current sound if any
+    await stopAndUnloadCurrentSound();
+
+    // Configure audio mode for background play
+    await Audio.setAudioModeAsync({
+      staysActiveInBackground: true,
+      shouldDuckAndroid: true,
+      playsInSilentModeIOS: true,
+    });
+
+    // Create and load new sound
+    const { sound } = await Audio.Sound.createAsync(
+      { uri: songData.downloadUrl },
+      {
+        shouldPlay: true,
+        isLooping: false,
+        volume: 1.0,
+      },
+    );
+
+    // Set up playback status update
+    sound.setOnPlaybackStatusUpdate((status) => {
+      if (status.isLoaded) {
+        const { updatePlayback, nextSong } = useMusicStore.getState();
+        updatePlayback(
+          status.positionMillis || 0,
+          status.durationMillis || 0,
+          status.isPlaying || false,
+        );
+
+        // Auto-play next song when current finishes
+        if (status.didJustFinish && status.isPlaying === false) {
+          console.log("🎵 Song finished, playing next");
+          nextSong();
+        }
+      }
+    });
+
+    // Update global sound reference
+    setGlobalSound(sound);
+    setLastLoadedId(songId);
+
+    console.log("✅ Audio loaded and playing:", songData.name);
+  } catch (error) {
+    console.error("❌ Error loading audio:", error);
+  }
+};
+
 export const useMusicStore = create<MusicState>()(
   persist(
     (set, get) => ({
@@ -81,6 +140,20 @@ export const useMusicStore = create<MusicState>()(
       setSong: (songId, songData) => {
         const state = get();
 
+        // Prevent infinite loop - don't set the same song again
+        if (state.currentSong?.id === songId && state.isPlaying) {
+          console.log(" Same song already playing, skipping setSong");
+          return;
+        }
+
+        // Stop any currently playing audio before starting new song
+        if (state.currentSong && state.isPlaying) {
+          console.log(
+            " Stopping current song before playing new one:",
+            state.currentSong.obj.name,
+          );
+        }
+
         // 1. Clean existing queue (set all isPlaying to false)
         const cleanedQueue = state.SongQueue.map((item) => ({
           ...item,
@@ -107,6 +180,17 @@ export const useMusicStore = create<MusicState>()(
           isPlaying: true, // Start playing immediately
           position: 0, // Reset progress for new song
         });
+
+        console.log(
+          " New song loaded and playing:",
+          songData.name,
+          "isPlaying:",
+          true,
+        );
+        console.log(" MiniPlayer should now show pause icon");
+
+        // IMPORTANT: Actually load and play the audio
+        loadAndPlayAudio(songId, songData);
       },
 
       nextSong: () => {
@@ -120,8 +204,28 @@ export const useMusicStore = create<MusicState>()(
         // Check if there's a next song in the queue
         if (currentIndex !== -1 && currentIndex < SongQueue.length - 1) {
           const nextItem = SongQueue[currentIndex + 1];
-          set({ currentSong: nextItem, position: 0 });
+
+          // Update queue to set all songs to not playing, then set next song to playing
+          const updatedQueue = SongQueue.map((item) => ({
+            ...item,
+            obj: { ...item.obj, isPlaying: false },
+          }));
+          const nextIndex = updatedQueue.findIndex((s) => s.id === nextItem.id);
+          if (nextIndex !== -1) {
+            updatedQueue[nextIndex].obj.isPlaying = true;
+          }
+
+          set({
+            currentSong: nextItem,
+            SongQueue: updatedQueue,
+            isPlaying: true, // IMPORTANT: Set playing to true for automatic playback
+            position: 0,
+          });
           console.log("🎵 Playing next song from queue:", nextItem.obj.name);
+          console.log("🎵 MiniPlayer should now show pause icon for next song");
+
+          // CRITICAL: Actually load and play the audio for next song
+          loadAndPlayAudio(nextItem.id, nextItem.obj);
         } else {
           // No more songs in queue - try to get from cache (natural progression)
           console.log("📭 Queue ended, trying to get song from cache");
@@ -141,7 +245,30 @@ export const useMusicStore = create<MusicState>()(
         );
         if (currentIndex > 0) {
           const prevItem = SongQueue[currentIndex - 1];
-          set({ currentSong: prevItem, position: 0 });
+
+          // Update queue to set all songs to not playing, then set prev song to playing
+          const updatedQueue = SongQueue.map((item) => ({
+            ...item,
+            obj: { ...item.obj, isPlaying: false },
+          }));
+          const prevIndex = updatedQueue.findIndex((s) => s.id === prevItem.id);
+          if (prevIndex !== -1) {
+            updatedQueue[prevIndex].obj.isPlaying = true;
+          }
+
+          set({
+            currentSong: prevItem,
+            SongQueue: updatedQueue,
+            isPlaying: true, // IMPORTANT: Set playing to true for automatic playback
+            position: 0,
+          });
+          console.log(
+            "🎵 Playing previous song from queue:",
+            prevItem.obj.name,
+          );
+          console.log(
+            "🎵 MiniPlayer should now show pause icon for previous song",
+          );
         }
       },
 
@@ -254,15 +381,9 @@ export const useMusicStore = create<MusicState>()(
         if (randomSong) {
           console.log("🎵 Found random song from cache:", randomSong.obj.name);
 
-          // Add to queue and play it
-          const updatedQueue = [...SongQueue, randomSong];
-
-          set({
-            SongQueue: updatedQueue,
-            currentSong: randomSong,
-            position: 0,
-            isPlaying: true,
-          });
+          // IMPORTANT: Use setSong to ensure proper loading and API calls
+          // This will trigger the downloadUrl API call and proper playback
+          get().setSong(randomSong.id, randomSong.obj);
 
           return true;
         } else {
