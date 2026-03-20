@@ -1,50 +1,98 @@
-# Welcome to your Expo app 👋
+# Home Player 🎵
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A beautiful, modern music player app built with **Expo**, **TypeScript**, **Zustand** and **Expo AV** — powered by **JioSaavn API**.
 
-## Get started
+Dark / Light mode • Background playback • Mini player • Smart queue • Local favorites & recents
 
-1. Install dependencies
+https://github.com/yourusername/home-player
 
-   ```bash
-   npm install
-   ```
+## ✨ Features
 
-2. Start the app
+### Playback & Controls
+- Full-featured player with seek bar, forward/rewind
+- Background playback support
+- Persistent mini-player (bottom bar) synced with full player
+- Play / Pause / Next / Previous
 
-   ```bash
-   npx expo start
-   ```
+### Queue Management
+- Add / Remove / Reorder songs in queue
+- Queue persists locally (AsyncStorage)
+- Auto-generated "Recently Played" queue
+- Ability to remove individual recent songs or clear all
 
-In the output, you'll find options to open the app in a
+### Library & Favorites
+- Mark songs as **favorites** (stored locally)
+- View and manage recently played songs
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Screens
+- Home / Suggestions
+- Search (with recent search history)
+- Search Results
+- Albums / Playlists / Artists fetching screens
+- Music fetching / loading states
+- Recent Played screen (with remove & clear options)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### UI/UX
+- Beautiful dark & light mode support
+- Smooth animations & modern design
+- Responsive across devices
 
-## Get a fresh project
+## 🛠 Tech Stack
 
-When you're ready, run:
+- **Framework**: Expo (React Native)
+- **Language**: TypeScript
+- **State Management**: Zustand
+- **Storage**: AsyncStorage
+- **Audio**: Expo AV
+- **API**: JioSaavn API (online music metadata & streaming)
+
+## 🚀 Quick Start
 
 ```bash
-npm run reset-project
+# 1. Clone the repo
+git clone https://github.com/yourusername/home-player.git
+cd home-player
+
+# 2. Install dependencies
+npm install
+
+# 3. Start the app (clear cache recommended first time)
+npx expo start -c
+
+
+a → run on Android emulator/device
+
+
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+# Some Screen Shots of Music App
+Home Screen Dark Mode
 
-## Learn more
+![suggest screen dark](https://github.com/user-attachments/assets/474d806e-f209-4673-8fd2-677dbc01f3a9)
 
-To learn more about developing your project with Expo, look at the following resources:
+Home Screen Light Mode
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+![suggested light theme](https://github.com/user-attachments/assets/9d158ab8-b521-4ec3-99c8-c4b4348249e2)
 
-## Join the community
 
-Join our community of developers creating universal apps.
+Search  Screen
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+![search result dark theme ](https://github.com/user-attachments/assets/c7192d67-be3e-4fd3-90a2-a39cacc8c2c3)
+
+
+![search dark theme](https://github.com/user-attachments/assets/163abe38-8d25-43b2-a32c-1cee2877f27c)
+
+
+
+Player Screen 
+
+
+![Player White theme](https://github.com/user-attachments/assets/9f2a96b2-2dbe-448f-83c6-380acbf669d5)
+
+
+
+
+![player screen dark theme](https://github.com/user-attachments/assets/350f9bff-2110-4957-9bab-54d9ce81faf3)
+
+
+
